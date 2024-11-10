@@ -1,0 +1,2 @@
+reflex==0.6.4
+google-auth==2.36.0

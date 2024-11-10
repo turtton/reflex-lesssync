@@ -1,0 +1,10 @@
+services:
+  app:
+    container_name: reflex-lesssync
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
