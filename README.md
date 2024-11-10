@@ -1,6 +1,8 @@
-# Reflex synchronous deviation bug with google auth
+# ~~Reflex synchronous deviation bug with google auth~~
 
-Authentication using GoogleAuth and strange synchronization issues with background tasks
+~~Authentication using GoogleAuth and strange synchronization issues with background tasks~~
+
+RESOLVED. Using `async with self:` everywhere even if you just get any data from state.
 
 ## How to reproduce
 

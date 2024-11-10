@@ -61,16 +61,19 @@ class State(rx.State):
         return "Not logged in."
 
     @rx.background
-    async def any_sync_loop(self) -> AsyncGenerator[None, None]:
+    async def poll_user_data(self) -> AsyncGenerator[None, None]:
         """
         This is a example background task that runs every 1 seconds.
         """
         while self.router.session.client_token in app.event_namespace.token_to_sid:
-            if self.token_is_valid:
-                async with self:
-                    self.background_state = "not logged in"
-            # Polling db or any other resources
             await asyncio.sleep(1)
+            async with self:
+                if not self.token_is_valid:
+                    self.background_state = "not logged in"
+                    continue
+
+            # Polling db or any other resources
+
             async with self:
                 self.background_state = "logged in as " + self.tokeninfo["name"]
 
@@ -132,7 +135,7 @@ def protected() -> rx.Component:
         rx.text(State.protected_content),
         rx.link("Home", href="/"),
         # Begin background task
-        on_mount=State.any_sync_loop,
+        on_mount=State.poll_user_data,
     )
 
 
